@@ -22,6 +22,7 @@ Program ma cztery wersje, które przetwarzają te same pliki i dają ten sam wyn
 
 ```
 README.md
+common/     kod wspólny dla seq i omp
 seq/        wersja referencyjna (sekwencyjna)
 omp/        wersja OpenMP
 mpi/        wersja MPI
@@ -115,15 +116,17 @@ pozycja,entropia_przed,entropia_po,roznica
 4096,4.512345678901,7.981234567890,3.468888888989
 ```
 
-`czasy.csv` – czasy etapów jednego uruchomienia, w sekundach:
+`roznica` to wartość bezwzględna |H(k+1) − H(k)|.
+
+`czasy.csv` – czasy etapów jednego uruchomienia, w sekundach, z 6 miejscami po przecinku:
 
 ```csv
 etap,czas_s
-odczyt,0.120
-obliczenia,0.850
-wykrywanie_zmian,0.001
-zapis,0.030
-calosc,1.010
+odczyt,0.120000
+obliczenia,0.850000
+wykrywanie_zmian,0.001000
+zapis,0.030000
+calosc,1.010000
 ```
 
 - Etapy wspólne: `odczyt`, `obliczenia` (histogramy i entropia, czyli rdzeń), `wykrywanie_zmian`, `zapis`, `calosc`.
@@ -209,6 +212,17 @@ python3 tools/gen_data.py [--out data] [--seed 1] --size N   # losowy_N.bin, N b
 
 Wersje MG:
 
-TODO: użycie makefile
+```
+python3 tools/gen_data.py                     # pliki testowe do data/
+make -C seq                                   # buduje seq/entropy_seq
+seq/entropy_seq --input data/segmenty.bin --out results/seq
+seq/entropy_seq --input data/segmenty.bin --step 1024 --mode incremental --out results/seq_inc
+```
+
+Pliki źródłowe:
+
+- `common/entropy_common.hpp` – kod wspólny dla `entropy_seq` i `entropy_omp`: parametry, podział na okna, entropia, `compute_range` (entropia zakresu okien, tryb `full` lub `incremental`), wykrywanie zmian, zapis plików CSV.
+- `seq/main.cpp` – wersja sekwencyjna: odczyt → obliczenia → wykrywanie zmian → zapis, z pomiarem czasu etapów.
+- `seq/Makefile` – `make -C seq`, `make -C seq clean`. Flagi: `-std=c++17 -O2 -Wall -Wextra`, bez `-ffast-math`, bo mogłaby zmienić kolejność sumowania entropii.
 
 Wersje MPI i GPU: [do uzupełnienia przez KŚ].

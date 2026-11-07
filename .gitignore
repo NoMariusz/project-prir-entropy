@@ -3,6 +3,12 @@ data/*
 !data/lorem_ipsum.txt
 !data/only_text.pdf
 
+# Pliki wynikowe
+seq/results/*
+omp/results/*
+mpi/results/*
+gpu/results/*
+
 # Pliki binarne i budowanie
 *.o
 *.out
