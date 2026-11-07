@@ -1,0 +1,19 @@
+# Wygenerowane pliki testowe (poza dwoma statycznymi plikami w repozytorium)
+data/*
+!data/lorem_ipsum.txt
+!data/only_text.pdf
+
+# Pliki binarne i budowanie
+*.o
+*.out
+build/
+entropy_seq
+entropy_omp
+entropy_mpi
+entropy_gpu
+
+# Edytory i system
+.vscode/
+.idea/
+*.swp
+.DS_Store
