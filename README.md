@@ -16,7 +16,7 @@ Program ma cztery wersje, które przetwarzają te same pliki i dają ten sam wyn
 | `entropy_omp`    | `omp/`   | C++17, gcc 13, OpenMP           | MG    |
 | `entropy_mpi`    | `mpi/`   | MPI, język: [do ustalenia]      | KŚ    |
 | `entropy_gpu`    | `gpu/`   | CUDA lub OpenCL: [do ustalenia] | KŚ    |
-| generator plików | `tools/` | [do ustalenia]                  | MG    |
+| generator plików | `tools/` | Python 3                        | MG    |
 
 ## Struktura repozytorium
 
@@ -175,6 +175,18 @@ Generator przyjmuje ziarno losowania i zapisuje je, aby pliki dało się odtworz
 
 - Granice segmentów celowo nie wypadają na wielokrotnościach 4096.
 - Do pomiarów generator może tworzyć też duże pliki o zadanym rozmiarze, np. 100 MB, 500 MB i 1 GB.
+
+Implementacja: `tools/gen_data.py` (Python 3, tylko biblioteka standardowa).
+
+```
+python3 tools/gen_data.py [--out data] [--seed 1]            # zestaw testowy
+python3 tools/gen_data.py [--out data] [--seed 1] --size N   # losowy_N.bin, N bajtów losowych
+```
+
+- Pliki podstawowe mają 64 KiB (65 536 B); `nierowny.bin` ma 66 536 B.
+- `segmenty.bin`: tekst (10 000 B), zera (15 000 B), losowe (20 000 B), tekst (20 536 B). Tekst to losowe małe litery i spacje.
+- `segmenty_granice.csv` (`pozycja,segment_przed,segment_po`) zawiera granice 10000, 25000 i 45000.
+- Ziarno trafia do `ziarno.txt`. To samo ziarno daje identyczne pliki.
 
 ## Testy poprawności
 
