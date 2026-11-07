@@ -217,6 +217,8 @@ python3 tools/gen_data.py                     # pliki testowe do data/
 make -C seq                                   # buduje seq/entropy_seq
 seq/entropy_seq --input data/segmenty.bin --out results/seq
 seq/entropy_seq --input data/segmenty.bin --step 1024 --mode incremental --out results/seq_inc
+make -C omp                                   # buduje omp/entropy_omp
+omp/entropy_omp --input data/segmenty.bin --threads 4 --out results/omp
 ```
 
 Pliki źródłowe:
@@ -224,5 +226,9 @@ Pliki źródłowe:
 - `common/entropy_common.hpp` – kod wspólny dla `entropy_seq` i `entropy_omp`: parametry, podział na okna, entropia, `compute_range` (entropia zakresu okien, tryb `full` lub `incremental`), wykrywanie zmian, zapis plików CSV.
 - `seq/main.cpp` – wersja sekwencyjna: odczyt → obliczenia → wykrywanie zmian → zapis, z pomiarem czasu etapów.
 - `seq/Makefile` – `make -C seq`, `make -C seq clean`. Flagi: `-std=c++17 -O2 -Wall -Wextra`, bez `-ffast-math`, bo mogłaby zmienić kolejność sumowania entropii.
+- `omp/main.cpp` – wersja OpenMP; różni się od `seq/main.cpp` tylko etapem obliczeń. Tryb `full`: `parallel for schedule(static)` po oknach. Tryb `incremental`: każdy wątek liczy `compute_range` dla swojego ciągłego zakresu okien.
+- `omp/Makefile` – jak `seq/Makefile`, z dodatkową flagą `-fopenmp`.
+
+Wyniki `entropy_omp` są identyczne (bit w bit) z `entropy_seq` dla każdej liczby wątków, bo każde okno liczy ta sama funkcja.
 
 Wersje MPI i GPU: [do uzupełnienia przez KŚ].

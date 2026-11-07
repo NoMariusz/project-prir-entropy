@@ -19,7 +19,7 @@ struct Params {
     uint64_t step = 4096;
     double threshold = 1.0;
     bool incremental = false;
-    std::string out = ".";
+    std::string out = "./results";
     std::map<std::string, std::string> extra;  // dodatkowe opcje danej wersji, np. --threads
 };
 
