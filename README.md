@@ -12,8 +12,8 @@ Program ma cztery wersje, które przetwarzają te same pliki i dają ten sam wyn
 
 | Program          | Katalog  | Technologia                     | Autor |
 | ---------------- | -------- | ------------------------------- | ----- |
-| `entropy_seq`    | `seq/`   | C++17, gcc 13                   | MG    |
-| `entropy_omp`    | `omp/`   | C++17, gcc 13, OpenMP           | MG    |
+| `entropy_seq`    | `seq/`   | C++17, g++ 11.4                 | MG    |
+| `entropy_omp`    | `omp/`   | C++17, g++ 11.4, OpenMP         | MG    |
 | `entropy_mpi`    | `mpi/`   | MPI, język: [do ustalenia]      | KŚ    |
 | `entropy_gpu`    | `gpu/`   | CUDA lub OpenCL: [do ustalenia] | KŚ    |
 | generator plików | `tools/` | Python 3                        | MG    |
